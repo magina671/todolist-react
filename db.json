@@ -1,0 +1,9 @@
+{
+  "todoData": [
+    { "label": "Learn Frontend", "important": false, "done": false, "id": 1 },
+    { "label": "Learn React", "important": false, "done": false, "id": 2 },
+    { "label": "Find Work", "important": false, "done": false, "id": 3 }
+    { "label": "Book read", "important": false, "done": false, "id": 4 }
+    { "label": "Relax", "important": false, "done": false, "id": 5 }
+  ]
+}
