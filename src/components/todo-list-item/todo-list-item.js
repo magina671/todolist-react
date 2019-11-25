@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./todo-list-item.css";
+import Editor from "../editor";
 
 export default class TodoListItem extends Component {
   // constructor() {
@@ -29,6 +30,7 @@ export default class TodoListItem extends Component {
   //     };
   //   });
   // };
+  
 
   render() {
     const {
@@ -37,9 +39,10 @@ export default class TodoListItem extends Component {
       onToggleDone,
       onToggleImportant,
       important,
-      done
+      done,
+      isInEditMode,
+      id
     } = this.props;
-    // const { done, important } = this.state;
 
     let classNames = "todo-list-item";
     if (done) {
@@ -49,33 +52,30 @@ export default class TodoListItem extends Component {
     if (important) {
       classNames += " important";
     }
-    // const textStyle = {
-    //   color: important ? "steelblue" : "black",
-    //   fontWeight: important ? "bold" : "normal"
-    // };
 
     return (
-      <span className={classNames}>
-        <span className="todo-list-item-label" onClick={onToggleDone}>
-          {label}
+      
+        <span className={classNames}>
+          <div className="todo-list-item-label" onClick={onToggleDone}>
+            <Editor id = {id} label = {label} isInEditMode = {isInEditMode} />
+          </div>
+
+          <button
+            type="button"
+            className="btn btn-outline-success btn-sm float-right"
+            onClick={onToggleImportant}
+          >
+            <i className="fa fa-exclamation"></i>
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-outline-danger btn-sm float-right"
+            onClick={onDeleted}
+          >
+            <i className="fa fa-trash-o"></i>
+          </button>
         </span>
-
-        <button
-          type="button"
-          className="btn btn-outline-success btn-sm float-right"
-          onClick={onToggleImportant}
-        >
-          <i className="fa fa-exclamation"></i>
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-outline-danger btn-sm float-right"
-          onClick={onDeleted}
-        >
-          <i className="fa fa-trash-o"></i>
-        </button>
-      </span>
     );
   }
 }

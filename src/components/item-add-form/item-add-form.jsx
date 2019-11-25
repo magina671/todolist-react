@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import "./item-add-form.css";
+import axios from "axios";
 
 export default class ItemAddForm extends Component {
   state = {
-    label: ""
+    label: "",
+    important: false,
+    done: this.props.done
   };
+
+  
+
 
   onLabelChange = event => {
     this.setState({
@@ -14,10 +20,32 @@ export default class ItemAddForm extends Component {
 
   onSubmit = event => {
     event.preventDefault(); // не перезагружать страницу
+
     this.props.onItemAdded(this.state.label);
     this.setState({
-        label: ''
+      label: ""
     });
+
+    const task = {
+      label: this.state.label,
+      important: false,
+      done: false, 
+    };
+    axios
+      .post(
+        `https://my-json-server.typicode.com/magina671/todolist-react/todoData/`,
+        { task }
+      )
+      .then(res => {
+        console.log("POST :" + res.data);
+        // this.setState({
+        //   todoData: [
+        //     this.state.label,
+        //     this.state.important,
+        //     this.state.done,
+        //   ]
+        // });
+      });
   };
 
   render() {
@@ -30,7 +58,9 @@ export default class ItemAddForm extends Component {
           placeholder="what needs to be done"
           value={this.state.label}
         />
-        <button className="btn btn-outline-secondary">Addtask</button>
+        <button type="submit" className="btn btn-outline-secondary">
+          Addtask
+        </button>
       </form>
     );
   }

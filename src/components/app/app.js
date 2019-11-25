@@ -6,6 +6,7 @@ import TodoList from "../todo-list";
 import ItemStatusFilter from "../item-status-filter";
 import "./app.css";
 import ItemAddForm from "../item-add-form";
+import axios from "axios";
 // import TodoListItem from "../todo-list-item";
 
 export default class App extends Component {
@@ -13,38 +14,67 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      // this.createTodoItem("Learn Frontend"),
-      // this.createTodoItem("Listen to music"),
-      // this.createTodoItem("Relax"),
-      { label: "Learn Frontend", important: false, done: false, id: 1 },
-      { label: "Learn React", important: false, done: false, id: 2 },
-      { label: "Find Work", important: false, done: false, id: 3 }
+      // { label: "Learn Frontend", important: false, done: false, id: 1 },
+      // { label: "Learn React", important: false, done: false, id: 2 },
+      // { label: "Find Work", important: false, done: false, id: 3 }
     ],
     term: "",
-    filter: "all"
+    filter: "all",
+    isInEditMode: false
+    // id: ""
   };
 
-  // createTodoItem(label) {
-  //   return {
-  //     id: this.maxId++,
-  //     label,
-  //     important: false,
-  //     done: false
+  // data = axios.get("https://my-json-server.typicode.com/magina671/todolist-react")
+  //   .then
+
+  componentDidMount() {
+    axios
+      .get(
+        `https://my-json-server.typicode.com/magina671/todolist-react/todoData`
+      )
+      .then(res => {
+        const todoData = res.data;
+        this.setState({ todoData: todoData });
+        console.log("GET: " + res.data);
+      });
+  }
+
+  // editTodo = title => {
+  //   console.log("Edit todo:" + title);
+  //   const editTodo = {
+  //     title: title,
+  //     edited: false
   //   };
-  // }
+  //   this.setState({ todoData: [...this.state.todoData, editTodo] });
+  // };
 
   deleteItem = id => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex(el => el.id === id);
-      const before = todoData.slice(0, idx);
-      const after = todoData.slice(idx + 1);
-      const newArray = [...before, ...after];
+    axios
+      .delete(
+        `https://my-json-server.typicode.com/magina671/todolist-react/todoData/${id}`
+      )
+      .then(res => {
+        const filteredItems = this.state.todoData.filter(item => {
+          return item.id !== id;
+        });
+        this.setState({
+          todoData: filteredItems
+        });
+        console.log("DELETE" + res.data);
+      });
+    // this.setState(({ todoData }) => {
+    //   const idx = todoData.findIndex(el => el.id === id);
+    //   const before = todoData.slice(0, idx);
+    //   const after = todoData.slice(idx + 1);
+    //   const newArray = [...before, ...after];
 
-      return {
-        todoData: newArray
-      };
-    });
+    //   return {
+    //     todoData: newArray
+    //   };
+    // });
   };
+
+  
 
   addItem = label => {
     //generate id
@@ -57,27 +87,12 @@ export default class App extends Component {
     };
     //add element to array
     this.setState(({ todoData }) => {
-      // const dataForNewArray = todoData.slice(0);
-      // dataForNewArray.push(newItem);
       const newArr = [...todoData, newItem];
       return {
         todoData: newArr
       };
     });
   };
-
-  // toggleProperty(arr, id, propName) {
-  //   const idx = arr.findIndex(el => el.id === id);
-  //   //1) update object
-  //   const oldItem = arr[idx];
-  //   const newItem = { ...oldItem, [propName]: !oldItem[propName] };
-  //   //2) construct new array
-  //   // const before = arr.slice(0, idx);
-  //   // const after = arr.slice(idx + 1);
-  //   // const newArray = [...before, newItem, ...after];
-  //   const newArray = [arr.slice(0, idx), newItem, arr.slice(idx + 1)];
-  //   return { newArray };
-  // }
 
   onToggleImportant = id => {
     this.setState(({ todoData }) => {

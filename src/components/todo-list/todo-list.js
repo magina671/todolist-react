@@ -11,6 +11,7 @@ const TodoList = ({ todos, onDeleted, onToggleDone, onToggleImportant }) => {
         <TodoListItem
           {...itemProps} // берем все свойства item и передаем их, в итоге сокращается код и нам не надо использовать нижнюю строку.
           // label={item.label} important={item.important}
+          id = {item.id}
           onDeleted={() => onDeleted(id)}
           onToggleDone={() => onToggleDone(id)}
           onToggleImportant={() => onToggleImportant(id)}
